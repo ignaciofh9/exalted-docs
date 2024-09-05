@@ -72,7 +72,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
           : level;
         if (index == 0) {
           withinTierLevel -= baseLevel;
-        } else {
+        } else if (!unitData.isLaguz) {
           withinTierLevel -= 1;
         }
 
