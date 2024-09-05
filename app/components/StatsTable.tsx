@@ -67,13 +67,24 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
         const cap = tier.caps[stat].get(currentVersion) || Infinity;
 
         const baseLevel = unitData.baseLevel.get(currentVersion) || 1;
-        let withinTierLevel = unitData.isLaguz
-          ? level - [0, 14, 22, 29][tier.tierIndex]
-          : level;
-        if (index == 0) {
-          withinTierLevel -= baseLevel;
-        } else if (!unitData.isLaguz) {
-          withinTierLevel -= 1;
+        let withinTierLevel = level;
+
+        if (unitData.isLaguz) {
+          if (index == 0) {
+            withinTierLevel -= baseLevel;
+          } else {
+            withinTierLevel -= [0, 14, 22, 29][tier.tierIndex];
+            // if the level in the previous tier is not in [14, 22, 29], then subtract 1
+            if (!([14, 22, 29].includes(levels[index - 1]))) {
+              withinTierLevel -= 1;
+            }
+          }
+        } else {
+          if (index == 0) {
+            withinTierLevel -= baseLevel;
+          } else {
+            withinTierLevel -= 1;
+          }
         }
 
         tierStats[stat] = Math.min(
