@@ -1,3 +1,114 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes glisten {
+    0% {
+      background-position: 0% 50%;
+    }
+    20% {
+      background-position: 0% 50%;
+    }
+    80% {
+      background-position: 290% 50%;
+    }
+    100% {
+      background-position: 290% 50%;
+    }
+  }
+
+  :root {
+    --fire-light: rgba(230, 120, 40, 0.95);
+    --fire-dark: rgba(255, 150, 70, 0.95);
+    --thunder-light: rgba(210, 190, 70, 0.95);
+    --thunder-dark: rgba(240, 220, 100, 0.95);
+    --wind-light: rgba(75, 170, 45, 0.95);
+    --wind-dark: rgba(100, 200, 70, 0.95);
+    --water-light: rgba(80, 120, 240, 0.95);
+    --water-dark: rgba(110, 150, 255, 0.95);
+    --dark-light: rgba(60, 45, 130, 0.95);
+    --dark-dark: rgba(90, 75, 160, 0.95);
+    --light-light: rgba(240, 195, 80, 0.95);
+    --light-dark: rgba(255, 225, 110, 0.95);
+    --earth-light: rgba(125, 90, 55, 0.95);
+    --earth-dark: rgba(155, 120, 85, 0.95);
+    --heaven-light: rgba(135, 145, 180, 0.99);
+    --heaven-dark: rgba(195, 200, 230, 0.99);
+  }
+  
+  .Fire-version {
+    --version-color: var(--fire-light);
+  }
+  .Thunder-version {
+    --version-color: var(--thunder-light);
+  }
+  .Wind-version {
+    --version-color: var(--wind-light);
+  }
+  .Water-version {
+    --version-color: var(--water-light);
+  }
+  .Dark-version {
+    --version-color: var(--dark-light);
+  }
+  .Light-version {
+    --version-color: var(--light-light);
+  }
+  .Earth-version {
+    --version-color: var(--earth-light);
+  }
+  .Heaven-version {
+    --version-color: var(--heaven-light);
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    .Fire-version {
+      --version-color: var(--fire-dark);
+    }
+    .Thunder-version {
+      --version-color: var(--thunder-dark);
+    }
+    .Wind-version {
+      --version-color: var(--wind-dark);
+    }
+    .Water-version {
+      --version-color: var(--water-dark);
+    }
+    .Dark-version {
+      --version-color: var(--dark-dark);
+    }
+    .Light-version {
+      --version-color: var(--light-dark);
+    }
+    .Earth-version {
+      --version-color: var(--earth-dark);
+    }
+    .Heaven-version {
+      --version-color: var(--heaven-dark);
+    }
+  }
+
+[class$="-version"]:not(.DEFAULT-version) {
+    color: var(--version-color);
+    background-image: linear-gradient(
+      135deg,
+      var(--version-color) 0%,
+      var(--version-color) 40%,
+      rgba(255, 255, 255, 0.8) 50%,
+      var(--version-color) 60%,
+      var(--version-color) 100%
+    );
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glisten 6s linear infinite;
+  }
+
+.capped {
+  color: rgba(30, 210, 75, 0.9) !important;
+}
+
+[class$="-version"]:not(.DEFAULT-version).capped {
+  animation: none !important;
+}

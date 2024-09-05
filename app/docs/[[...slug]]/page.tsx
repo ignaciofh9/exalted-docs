@@ -1,12 +1,13 @@
-import { getPage, getPages } from '@/app/source';
-import type { Metadata } from 'next';
+import { getPage, getPages } from "@/app/source";
+import type { Metadata } from "next";
 import {
   DocsPage,
   DocsBody,
   DocsDescription,
   DocsTitle,
-} from 'fumadocs-ui/page';
-import { notFound } from 'next/navigation';
+} from "fumadocs-ui/page";
+import ImageIcon from "@/app/components/imageIcon";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -23,7 +24,19 @@ export default async function Page({
 
   return (
     <DocsPage toc={page.data.exports.toc} full={page.data.full}>
-      <DocsTitle>{page.data.title}</DocsTitle>
+      <div className="flex items-end space-x-4">
+        {params.slug && (
+          <ImageIcon
+            iconPath={params.slug.join("/")}
+            title={page.data.title}
+            size={5}
+            className="mr-2"
+          />
+        )}
+        <DocsTitle className="leading-none -mb-[0.095em] inline-block align-baseline">
+          {page.data.title}
+        </DocsTitle>
+      </div>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDX />
