@@ -34,7 +34,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
             (unitData.isLaguz ? 40 : 10);
 
           if (unitData.isLaguz) {
-            const laguzCaps = [14, 22, 29, 45];
+            const laguzCaps = [15, 23, 30, 45];
             return Math.min(defaultLevel, laguzCaps[tier.tierIndex]);
           } else {
             return Math.min(defaultLevel, 20);
@@ -73,11 +73,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
           if (index == 0) {
             withinTierLevel -= baseLevel;
           } else {
-            withinTierLevel -= [0, 14, 22, 29][tier.tierIndex];
-            // if the level in the previous tier is not in [14, 22, 29], then subtract 1
-            if (!([14, 22, 29].includes(levels[index - 1]))) {
-              withinTierLevel -= 1;
-            }
+            withinTierLevel -= [1, 15, 23, 30][tier.tierIndex];
           }
         } else {
           if (index == 0) {
@@ -215,7 +211,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
                         : 1
                     }
                     max={
-                      unitData.isLaguz ? [14, 22, 29, 45][tier.tierIndex] : 20
+                      unitData.isLaguz ? [15, 23, 30, 45][tier.tierIndex] : 20
                     }
                   />
                   )
