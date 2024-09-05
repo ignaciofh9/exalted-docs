@@ -1,10 +1,11 @@
+// docs/exalted-docs/app/components/VersionSelector.tsx
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { useGameData } from '@/app/GameDataContext/GameDataContext';
 import { AffinityType } from '@/app/types';
 import ImageIcon from '@/app/components/imageIcon';
 
-const AffinitySelector: React.FC = () => {
+const VersionSelector: React.FC = () => {
   const { currentVersion: currentAffinity, setCurrentVersion: setCurrentAffinity } = useGameData();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -82,4 +83,4 @@ const AffinitySelector: React.FC = () => {
   );
 };
 
-export default AffinitySelector;
+export default VersionSelector;
