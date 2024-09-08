@@ -1,4 +1,4 @@
-// components/imageIcon.tsx
+// components/ImageIcon.tsx
 'use client'
 
 import React, { useState } from 'react';
