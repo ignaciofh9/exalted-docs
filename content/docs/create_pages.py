@@ -69,7 +69,7 @@ def generate_part_meta_json(part, units):
         json.dump(meta_data, f, indent=2)
     
     # Create index.mdx for the part
-    index_content = generate_index_page(f"part {part} Units", units)
+    index_content = generate_index_page(f"Part {part} Units", units)
     with open(os.path.join(part_dir, "index.mdx"), "w") as f:
         f.write(index_content)
     
