@@ -2,15 +2,13 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import {
-  UnitData,
-  Version,
   GrowthStat,
   NonGrowthStat,
-  VersionedResult,
 } from "@/app/types";
 import LevelInput from "./LevelInput";
 import StatCell from "./StatCell";
 import { useGameData } from "@/app/GameDataContext";
+import StatsSkeleton from "./StatsSkeleton";
 
 interface Props {
   unitName: string;
@@ -35,7 +33,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
 
           if (unitData.isLaguz) {
             const laguzCaps = [15, 23, 30, 45];
-            return Math.min(defaultLevel, laguzCaps[tier.tierIndex]);
+            return Math.max(Math.min(defaultLevel, laguzCaps[tier.tierIndex]), unitData.baseLevel.get(currentVersion) || 1);
           } else {
             return Math.min(defaultLevel, 20);
           }
@@ -115,7 +113,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
     });
   };
 
-  if (isLoading) return <div className="text-center">Loading...</div>;
+  if (isLoading) return <StatsSkeleton />;
   if (error)
     return <div className="text-center text-red-500">Error: {error}</div>;
   if (!unitData) return <div className="text-center">Unit not found</div>;
@@ -124,19 +122,19 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
   const tierNames = ["T1", "T2", "T3", "T4"];
 
   return (
-    <div className="font-sans w-[95%] mt-2 rounded-sm border border-neutral-300 dark:border-neutral-700/80 shadow-md overflow-hidden">
-      <table className="w-full h-full my-0">
+    <div className="font-sans w-[98%] mt-2 rounded-sm border border-neutral-300 dark:border-neutral-700/80 shadow-md overflow-hidden">
+      <table className="w-full h-full my-0 not-prose">
         <thead>
           <tr className="bg-neutral-200 dark:bg-neutral-800/70 text-neutral-900 dark:text-neutral-200 text-md">
-            <th className="text-right pr-4 py-2 font-semibold w-[10em] border-r border-neutral-300 dark:border-neutral-700/80">
+            <th className="text-right pr-4 py-2 font-semibold w-[10em] border-r border-b border-neutral-300 dark:border-neutral-700/80">
               Stat
             </th>
             {growthStatHeaders.map((header, index) => (
               <th
                 key={header}
-                className={`w-16 text-center py-2 font-semibold ${
+                className={`w-16 text-center text-md py-2 font-semibold border-b border-neutral-300 dark:border-neutral-700/80 ${
                   index < growthStatHeaders.length - 1
-                    ? "border-r border-neutral-300 dark:border-neutral-700/80"
+                    ? "border-r"
                     : ""
                 }`}
               >
@@ -145,7 +143,7 @@ const StatsTable: React.FC<Props> = ({ unitName }) => {
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-neutral-900/50 text-neutral-900 dark:text-neutral-200">
+        <tbody className="bg-white dark:bg-neutral-800/25 text-neutral-900 dark:text-neutral-200">
           {/* Growth Rates Row */}
           <tr className="border-b border-neutral-300 dark:border-neutral-700/80">
             <td className="text-right pr-4 py-2 border-r border-neutral-300 dark:border-neutral-700/80">

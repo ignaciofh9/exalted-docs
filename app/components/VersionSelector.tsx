@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useGameData } from '@/app/GameDataContext/GameDataContext';
 import { AffinityType } from '@/app/types';
-import ImageIcon from '@/app/components/imageIcon';
+import { ImageIcon } from '@/app/components';
 
 const VersionSelector: React.FC = () => {
   const { currentVersion: currentAffinity, setCurrentVersion: setCurrentAffinity } = useGameData();

@@ -1,6 +1,7 @@
 import os
 import json
 import shutil
+from urllib.parse import quote
 
 def clear_folder(folder_path):
     for filename in os.listdir(folder_path):
@@ -21,25 +22,43 @@ icon: {relative_path}
 """
     return content
 
+def generate_index_page(title, units):
+    content = f"""---
+title: {title}
+---
+
+{' '.join([f'''
+<UnitStatsWindow unitName="{unit}">
+  ## {unit}
+</UnitStatsWindow>
+
+''' for unit in units])}
+"""
+    return content
+
+def create_url_friendly_filename(name):
+    return name.lower().replace(' ', '-')
+
 def create_unit_pages(units):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     units_dir = os.path.join(script_dir, "units")
     os.makedirs(units_dir, exist_ok=True)
     for unit in units:
-        filename = f"{unit.lower()}.mdx"
+        url_friendly_name = create_url_friendly_filename(unit)
+        filename = f"{url_friendly_name}.mdx"
         relative_path = os.path.join("units", filename).replace("\\", "/")  # Ensure forward slashes
         file_path = os.path.join(units_dir, filename)
         with open(file_path, "w") as f:
-            f.write(generate_unit_page(unit, relative_path[:-4]))  # Remove .mdx extension
+            f.write(generate_unit_page(unit, quote(relative_path[:-4])))  # Remove .mdx extension and URL-encode
         print(f"Created page for {unit} in {units_dir}")
 
 def generate_part_meta_json(part, units):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     units_dir = os.path.join(script_dir, "units")
-    part_dir = os.path.join(units_dir, f"Part_{part}")
+    part_dir = os.path.join(units_dir, f"part_{part}")
     os.makedirs(part_dir, exist_ok=True)
 
-    pages = [f"../{unit.lower()}" for unit in units]
+    pages = [f"../{create_url_friendly_filename(unit)}" for unit in units]
     
     meta_data = {
         "title": f"Part {part}",
@@ -49,7 +68,12 @@ def generate_part_meta_json(part, units):
     with open(os.path.join(part_dir, "meta.json"), "w") as f:
         json.dump(meta_data, f, indent=2)
     
-    print(f"Created meta.json for Part {part} in {part_dir}")
+    # Create index.mdx for the part
+    index_content = generate_index_page(f"part {part} Units", units)
+    with open(os.path.join(part_dir, "index.mdx"), "w") as f:
+        f.write(index_content)
+    
+    print(f"Created meta.json and index.mdx for part {part} in {part_dir}")
 
 def generate_main_meta_json():
     script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -57,7 +81,7 @@ def generate_main_meta_json():
     
     meta_data = {
         "title": "Units",
-        "pages": ["Part_1", "Part_2", "Part_3", "Part_4"]
+        "pages": ["part_1", "part_2", "part_3", "part_4"]
     }
     
     with open(os.path.join(units_dir, "meta.json"), "w") as f:
@@ -68,24 +92,24 @@ def generate_main_meta_json():
 # Lists of unit names organized by part, in order of appearance
 part1_units = [
     "Micaiah", "Edward", "Leonardo", "Nolan", "Laura", "Sothe", "Ilyana", "Aran", "Meg",
-    "Volug", "Tauroneo", "Jill", "Zihark", "Fiona", "Tormod", "Muarim", "Vika", "Nailah",
-    "Rafiel", "Black Knight"
+    "Volug", "Tauroneo", "Zihark", "Jill", "Fiona", "Tormod", "Muarim", "Vika", "Rafiel",
+    "Nailah", "Black Knight"
 ]
 
 part2_units = [
-    "Elincia", "Marcia", "Nealuchi", "Haar", "Brom", "Nephenee", "Heather", "Lucia",
-    "Lethe", "Mordecai", "Geoffrey", "Kieran", "Astrid", "Makalov", "Danved", "Calill"
+    "Elincia", "Marcia", "Nealuchi", "Leanne", "Haar", "Nephenee", "Brom", "Heather", "Lucia",
+    "Lethe", "Mordecai", "Geoffrey", "Kieran", "Makalov", "Astrid", "Danved", "Calill"
 ]
 
 part3_units = [
-    "Ike", "Titania", "Soren", "Mist", "Rolf", "Boyd", "Oscar", "Shinon", "Gatrie",
-    "Rhys", "Mia", "Ranulf", "Kyza", "Lyre", "Janaff", "Ulki", "Sigrun", "Tanith",
-    "Skrimir", "Naesala", "Sanaki", "Tibarn"
+    "Ike", "Soren", "Titania", "Oscar", "Boyd", "Shinon", "Rolf", "Mist", "Gatrie",
+    "Mia", "Rhys", "Ulki", "Ranulf", "Lyre", "Kyza", "Reyson", "Janaff", "Tanith", "Sigrun",
+    "Tibarn", "Pelleas", "Naesala", "Skrimir"
 ]
 
 part4_units = [
-    "Pelleas", "Stefan", "Oliver", "Bastian", "Volke", "Caineghis", "Giffca",
-    "Kurthnaga", "Ena", "Renning", "Lehran"
+    "Sanaki", "Ena", "Kurthnaga", "Stefan", "Oliver", "Bastian", "Volke", "Caineghis", "Giffca",
+    "Renning", "Lehran"
 ]
 
 all_units = part1_units + part2_units + part3_units + part4_units
@@ -109,3 +133,10 @@ generate_part_meta_json(4, part4_units)
 
 # Generate main meta.json
 generate_main_meta_json()
+
+# Create main index.mdx
+main_index_content = generate_index_page("All Units", all_units)
+with open(os.path.join(units_dir, "index.mdx"), "w") as f:
+    f.write(main_index_content)
+
+print(f"Created main index.mdx in {units_dir}")

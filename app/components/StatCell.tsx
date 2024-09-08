@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Version } from "../types";
+import { Version } from "@/app/types";
 
 export interface StatCellProps {
   value?: number;

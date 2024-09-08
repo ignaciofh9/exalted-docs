@@ -1,3 +1,4 @@
+// docs/exalted-docs/app/docs/[[...slug]]/page.tsx
 import { getPage, getPages } from "@/app/source";
 import type { Metadata } from "next";
 import {
@@ -6,8 +7,9 @@ import {
   DocsDescription,
   DocsTitle,
 } from "fumadocs-ui/page";
-import ImageIcon from "@/app/components/imageIcon";
+import { ImageIcon } from "@/app/components";
 import { notFound } from "next/navigation";
+import { imageExists } from "@/app/utils/imageUtils";
 
 export default async function Page({
   params,
@@ -21,16 +23,19 @@ export default async function Page({
   }
 
   const MDX = page.data.exports.default;
+  const iconPath = params.slug ? params.slug.join("/") : "";
+  const iconExists = imageExists(iconPath);
 
   return (
     <DocsPage toc={page.data.exports.toc} full={page.data.full}>
       <div className="flex items-end space-x-4">
-        {params.slug && (
+      {params.slug && (
           <ImageIcon
-            iconPath={params.slug.join("/")}
+            iconPath={iconPath}
             title={page.data.title}
             size={5}
             className="mr-2"
+            exists={iconExists}
           />
         )}
         <DocsTitle className="leading-none -mb-[0.095em] inline-block align-baseline">

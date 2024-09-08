@@ -33,7 +33,7 @@
     --earth-light: rgba(125, 90, 55, 0.95);
     --earth-dark: rgba(155, 120, 85, 0.95);
     --heaven-light: rgba(135, 145, 180, 0.99);
-    --heaven-dark: rgba(195, 200, 230, 0.99);
+    --heaven-dark: rgba(175, 190, 220, 0.99);
   }
   
   .Fire-version {
@@ -94,7 +94,7 @@
       135deg,
       var(--version-color) 0%,
       var(--version-color) 40%,
-      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 0.95) 50%,
       var(--version-color) 60%,
       var(--version-color) 100%
     );

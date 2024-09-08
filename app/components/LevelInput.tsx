@@ -13,7 +13,7 @@ const LevelInput = ({ value, onChange, min = 1, max = 20 }: LevelInputProps): JS
   const decrement = () => onChange(Math.max(value - 1, min));
 
   return (
-    <div className="inline-flex items-center bg-neutral-200 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded overflow-hidden focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-opacity-50">
+    <div className="inline-flex items-center bg-neutral-200 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded overflow-hidden focus-within:ring-1 focus-within:ring-blue-400/30 focus-within:ring-opacity-50">
       <input
         type="number"
         title='Level'

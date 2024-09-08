@@ -4,7 +4,7 @@ import { createMDXSource } from "fumadocs-mdx";
 import { icons } from "lucide-react";
 import { loader } from "fumadocs-core/source";
 import { createElement } from "react";
-import ImageIcon from "./components/imageIcon";
+import { ImageIcon } from "@/app/components";
 
 export const { getPage, getPages, pageTree } = loader({
   baseUrl: "/docs",
